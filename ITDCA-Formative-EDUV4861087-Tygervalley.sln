@@ -2,14 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "question1", "Question1\question1.csproj", "{1FCB4AC1-8DFB-2643-26AA-3E04A8CC615E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVLTree", "AVLTree\AVLTree.csproj", "{1FCB4AC1-8DFB-2643-26AA-3E04A8CC615E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Question2", "Question2\Question2.csproj", "{170EE994-017D-CDE4-B231-C093DAFF90E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriorityQueue", "PriorityQueue\PriorityQueue.csproj", "{170EE994-017D-CDE4-B231-C093DAFF90E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "question3", "Question3\question3.csproj", "{9338DFB0-CCB9-A6B1-89E9-6C92E8FED9E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "question4", "Question4\question4.csproj", "{F0E11A5E-3990-EBC5-1029-B4D472EC0E9B}"
-EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
