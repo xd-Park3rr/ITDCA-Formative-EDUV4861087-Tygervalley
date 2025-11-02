@@ -1,0 +1,37 @@
+[
+  {
+    "id": 0,
+    "name": "Hotel Cape Town",
+    "nightly_rate": 1500.00,
+    "stars": 4,
+    "distance_from_airport": 15
+  },
+  {
+    "id": 1,
+    "name": "Ocean View Inn",
+    "nightly_rate": 1200.00,
+    "stars": 3,
+    "distance_from_airport": 10
+  },
+  {
+    "id": 2,
+    "name": "Mountain Lodge",
+    "nightly_rate": 1800.50,
+    "stars": 5,
+    "distance_from_airport": 50
+  },
+  {
+    "id": 3,
+    "name": "Budget Stay",
+    "nightly_rate": 800.00,
+    "stars": 2,
+    "distance_from_airport": 5
+  },
+  {
+    "id": 4,
+    "name": "City Central Hotel",
+    "nightly_rate": 1350.75,
+    "stars": 4,
+    "distance_from_airport": 20
+  }
+]
