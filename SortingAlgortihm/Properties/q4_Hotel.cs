@@ -1,6 +1,6 @@
 using System;
 
-namespace SortingAlgortihm.Properties
+namespace SortingAlgortihm
 {
     // q4_ class: represents a hotel record loaded from JSON
     public class q4_Hotel

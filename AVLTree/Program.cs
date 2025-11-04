@@ -50,11 +50,17 @@ namespace AVLTree
 			PrintInOrder(tree);
 
 			// --- Demonstrate Question 2 features using q2_ classes ---
+			// Note: Q2 is a separate implementation demonstrating enhanced features.
+			// It creates a new tree with fresh data to showcase the 4 required Q2 features:
+			// 1. In-order traversal (titles only)
+			// 2. Binary search by year
+			// 3. Display most recent book
+			// 4. Display total book count
 			Console.WriteLine();
 			Console.WriteLine("--- Question 2: q2_AVLTree features demo ---");
 
 			var tree2 = new q2_AVLTree();
-			// insert same sample data as q2_Book instances
+			// Insert same sample data as q2_Book instances (fresh tree for Q2 demo)
 			foreach (var b in books)
 			{
 				tree2.Insert(new q2_Book(b.Title, b.Author, b.Year));
