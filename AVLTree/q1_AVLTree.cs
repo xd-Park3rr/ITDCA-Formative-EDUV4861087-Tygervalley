@@ -25,65 +25,65 @@ namespace AVLTree
             return InOrderNodes(Root);
         }
 
-        // in-order traversal - returns books sorted
+        // in-order traversal
         private IEnumerable<q1_Book> InOrderNodes(q1_AVLNode? node)
         {
             if (node == null)
                 yield break;
 
-            // left subtree first
+            // left
             foreach (var b in InOrderNodes(node.Left))
                 yield return b;
 
             yield return node.Data;
 
-            // then right subtree
+            // right
             foreach (var b in InOrderNodes(node.Right))
                 yield return b;
         }
         
         private q1_AVLNode InsertNode(q1_AVLNode? node, q1_Book book)
         {
+            // base case - empty spot found
             if (node == null)
                 return new q1_AVLNode(book);
 
-            // standard BST insert - compare year first, then title
+            // BST insert logic
             if (book.Year < node.Data.Year)
                 node.Left = InsertNode(node.Left, book);
             else if (book.Year > node.Data.Year)
                 node.Right = InsertNode(node.Right, book);
             else
             {
-                // same year so use title to decide
-                int cmp = string.Compare(book.Title, node.Data.Title, StringComparison.Ordinal);
-                if (cmp < 0)
+                // same year, compare titles
+                if (string.Compare(book.Title, node.Data.Title) < 0)
                     node.Left = InsertNode(node.Left, book);
                 else
                     node.Right = InsertNode(node.Right, book);
             }
 
-            // update height after insert
+            // update height
             node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
 
-            // check if tree is unbalanced
+            // get balance factor
             int balance = GetBalance(node);
 
-            // Left Left case
+            // LL case - right rotate
             if (balance > 1 && book.Year < node.Left!.Data.Year)
                 return RightRotate(node);
 
-            // Right Right case
+            // RR case - left rotate
             if (balance < -1 && book.Year > node.Right!.Data.Year)
                 return LeftRotate(node);
 
-            // Left Right case
+            // LR case - left then right
             if (balance > 1 && book.Year > node.Left!.Data.Year)
             {
                 node.Left = LeftRotate(node.Left!);
                 return RightRotate(node);
             }
 
-            // Right Left case
+            // RL case - right then left
             if (balance < -1 && book.Year < node.Right!.Data.Year)
             {
                 node.Right = RightRotate(node.Right!);
@@ -98,7 +98,7 @@ namespace AVLTree
             if (node == null)
                 return null;
 
-            // BST delete - find the node first
+            // navigate to the node
             if (year < node.Data.Year)
             {
                 node.Left = DeleteNode(node.Left, year, title);
@@ -109,39 +109,28 @@ namespace AVLTree
             }
             else
             {
-                // matching year, check title
-                int cmp = string.Compare(title, node.Data.Title, StringComparison.Ordinal);
-                if (cmp < 0)
-                {
+                // year matches, check title
+                int titleCmp = string.Compare(title, node.Data.Title);
+                if (titleCmp < 0)
                     node.Left = DeleteNode(node.Left, year, title);
-                }
-                else if (cmp > 0)
-                {
+                else if (titleCmp > 0)
                     node.Right = DeleteNode(node.Right, year, title);
-                }
                 else
                 {
-                    // found it - this is the node to delete
+                    // found the node to delete
+                    
+                    // case 1: node has one child or no children
                     if (node.Left == null || node.Right == null)
                     {
-                        // node with one or no child
-                        q1_AVLNode? temp = node.Left ?? node.Right;
-
-                        if (temp == null)
-                        {
-                            node = null;
-                        }
-                        else
-                        {
-                            node = temp;
-                        }
+                        node = node.Left ?? node.Right;
                     }
                     else
                     {
-                        // two children - get successor (smallest in right subtree)
-                        q1_AVLNode temp = MinValueNode(node.Right!);
-                        node.Data = temp.Data;
-                        node.Right = DeleteNode(node.Right, temp.Data.Year, temp.Data.Title);
+                        // case 2: node has two children
+                        // find minimum in right subtree (successor)
+                        q1_AVLNode successor = MinValueNode(node.Right!);
+                        node.Data = successor.Data;
+                        node.Right = DeleteNode(node.Right, successor.Data.Year, successor.Data.Title);
                     }
                 }
             }
@@ -149,26 +138,26 @@ namespace AVLTree
             if (node == null)
                 return null;
                 
-            // update height and rebalance
+            // update height and balance
             node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
             int balance = GetBalance(node);
 
-            // LL
+            // LL case
             if (balance > 1 && GetBalance(node.Left!) >= 0)
                 return RightRotate(node);
 
-            // LR
+            // LR case
             if (balance > 1 && GetBalance(node.Left!) < 0)
             {
                 node.Left = LeftRotate(node.Left!);
                 return RightRotate(node);
             }
 
-            // RR
+            // RR case
             if (balance < -1 && GetBalance(node.Right!) <= 0)
                 return LeftRotate(node);
 
-            // RL
+            // RL case
             if (balance < -1 && GetBalance(node.Right!) > 0)
             {
                 node.Right = RightRotate(node.Right!);
@@ -181,10 +170,9 @@ namespace AVLTree
         // find leftmost node
         private q1_AVLNode MinValueNode(q1_AVLNode node)
         {
-            q1_AVLNode current = node;
-            while (current.Left != null)
-                current = current.Left;
-            return current;
+            while (node.Left != null)
+                node = node.Left;
+            return node;
         }
 
         private int GetHeight(q1_AVLNode? node)
@@ -192,39 +180,37 @@ namespace AVLTree
             return node?.Height ?? 0;
         }
 
-        // balance factor
         private int GetBalance(q1_AVLNode? node)
         {
-            if (node == null)
-                return 0;
-            return GetHeight(node.Left) - GetHeight(node.Right);
+            return node == null ? 0 : GetHeight(node.Left) - GetHeight(node.Right);
         }
 
-        // rotate right
         private q1_AVLNode RightRotate(q1_AVLNode y)
         {
             q1_AVLNode x = y.Left!;
             q1_AVLNode? T2 = x.Right;
 
+            // rotate
             x.Right = y;
             y.Left = T2;
 
-            // heights need updating
+            // update heights
             y.Height = 1 + Math.Max(GetHeight(y.Left), GetHeight(y.Right));
             x.Height = 1 + Math.Max(GetHeight(x.Left), GetHeight(x.Right));
 
             return x;
         }
 
-        // rotate left
         private q1_AVLNode LeftRotate(q1_AVLNode x)
         {
             q1_AVLNode y = x.Right!;
             q1_AVLNode? T2 = y.Left;
 
+            // rotate
             y.Left = x;
             x.Right = T2;
 
+            // update heights
             x.Height = 1 + Math.Max(GetHeight(x.Left), GetHeight(x.Right));
             y.Height = 1 + Math.Max(GetHeight(y.Left), GetHeight(y.Right));
 
