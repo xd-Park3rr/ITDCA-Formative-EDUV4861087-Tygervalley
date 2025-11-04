@@ -49,40 +49,97 @@ namespace AVLTree
 			Console.WriteLine("In-order traversal after deletions:");
 			PrintInOrder(tree);
 
-			// --- Demonstrate Question 2 features using q2_ classes ---
-			// Note: Q2 is a separate implementation demonstrating enhanced features.
-			// It creates a new tree with fresh data to showcase the 4 required Q2 features:
-			// 1. In-order traversal (titles only)
-			// 2. Binary search by year
-			// 3. Display most recent book
-			// 4. Display total book count
+			// --- Question 2: Enhanced features with user interaction ---
+			// Q1 operations affect Q2 - convert Q1 tree contents to Q2
 			Console.WriteLine();
-			Console.WriteLine("--- Question 2: q2_AVLTree features demo ---");
+			Console.WriteLine("--- Question 2: q2_AVLTree features ---");
 
 			var tree2 = new q2_AVLTree();
-			// Insert same sample data as q2_Book instances (fresh tree for Q2 demo)
-			foreach (var b in books)
+			// Transfer all books from Q1 tree to Q2 tree (so Q1 deletions are reflected)
+			foreach (var b in tree.InOrder())
 			{
 				tree2.Insert(new q2_Book(b.Title, b.Author, b.Year));
 			}
 
 			Console.WriteLine();
-			Console.WriteLine("Q2 In-order traversal (titles only):");
-			foreach (var title in tree2.InOrderTitles())
-				Console.WriteLine(title);
+			Console.WriteLine("Books transferred from Q1 to Q2 tree.");
+			Console.WriteLine($"Total number of books: {tree2.Count}");
 
-			Console.WriteLine();
-			int searchYear = 2005;
-			Console.WriteLine($"Search by year {searchYear}: " + (tree2.SearchByYear(searchYear) ? "Found" : "Not found"));
+			// Interactive menu for Q2 features
+			bool running = true;
+			while (running)
+			{
+				Console.WriteLine();
+				Console.WriteLine("=== Q2 Menu ===");
+				Console.WriteLine("1 - Search by year");
+				Console.WriteLine("2 - Display most recent book");
+				Console.WriteLine("3 - Display number of books");
+				Console.WriteLine("4 - Display all titles");
+				Console.WriteLine("5 - Exit");
+				Console.Write("Choose an option: ");
 
-			var recent = tree2.GetMostRecentBook();
-			Console.WriteLine();
-			Console.WriteLine("Most recent book:");
-			if (recent != null) Console.WriteLine(recent.Title + " (" + recent.Year + ")");
-			else Console.WriteLine("No books in tree");
+				string? input = Console.ReadLine();
+				
+				switch (input)
+				{
+					case "1":
+						Console.Write("Enter year to search: ");
+						if (int.TryParse(Console.ReadLine(), out int year))
+						{
+							var booksInYear = tree2.GetBooksByYear(year);
+							if (booksInYear.Count > 0)
+							{
+								Console.WriteLine($"\nFound {booksInYear.Count} book(s) from {year}:");
+								foreach (var book in booksInYear)
+								{
+									Console.WriteLine($"  - {book.Title} by {book.Author}");
+								}
+							}
+							else
+							{
+								Console.WriteLine($"No books found from year {year}");
+							}
+						}
+						else
+						{
+							Console.WriteLine("Invalid year");
+						}
+						break;
 
-			Console.WriteLine();
-			Console.WriteLine("Total number of books in q2 tree: " + tree2.Count);
+					case "2":
+						var recent = tree2.GetMostRecentBook();
+						if (recent != null)
+						{
+							Console.WriteLine($"Most recent book: {recent.Title} by {recent.Author} ({recent.Year})");
+						}
+						else
+						{
+							Console.WriteLine("No books in tree");
+						}
+						break;
+
+					case "3":
+						Console.WriteLine($"Total books: {tree2.Count}");
+						break;
+
+					case "4":
+						Console.WriteLine("\nAll book titles (in order):");
+						foreach (var title in tree2.InOrderTitles())
+						{
+							Console.WriteLine("  " + title);
+						}
+						break;
+
+					case "5":
+						running = false;
+						Console.WriteLine("Exiting...");
+						break;
+
+					default:
+						Console.WriteLine("Invalid option");
+						break;
+				}
+			}
 		}
 
 		static void PrintInOrder(q1_AVLTree tree)
