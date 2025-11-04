@@ -1,51 +1,55 @@
 // priority queue for clinic patients
-public class q3_PriorityQueue
+namespace PriorityQueue
 {
-    private const int MinPriority = 0;
-    private const int MaxPriority = 4;
-
-    private readonly Queue<string>[] queues;
-
-    public q3_PriorityQueue()
+    public class q3_PriorityQueue
     {
-        queues = new Queue<string>[MaxPriority - MinPriority + 1];
-        for (int i = 0; i < queues.Length; i++) queues[i] = new Queue<string>();
-    }
-    
-    public void Enqueue(string name, int priority)
-    {
-        if (name == null) throw new ArgumentNullException(nameof(name));
-        
-        if (priority < MinPriority || priority > MaxPriority)
-            throw new ArgumentOutOfRangeException(nameof(priority));
+        private const int MinPriority = 0;
+        private const int MaxPriority = 4;
 
-        queues[priority].Enqueue(name);
-    }
-    
-    // dequeue from highest priority first (0 is highest)
-    public string? Dequeue()
-    {
-        for (int p = MinPriority; p <= MaxPriority; p++)
+        private readonly Queue<string>[] queues;
+
+        public q3_PriorityQueue()
         {
-            if (queues[p].Count > 0) return queues[p].Dequeue();
+            queues = new Queue<string>[MaxPriority - MinPriority + 1];
+            for (int i = 0; i < queues.Length; i++) queues[i] = new Queue<string>();
         }
-        return null;
-    }
     
-    public bool IsEmpty()
-    {
-        for (int p = MinPriority; p <= MaxPriority; p++) if (queues[p].Count > 0) return false;
-        return true;
-    }
-    
-    public IEnumerable<string> ViewQueue()
-    {
-        for (int p = MinPriority; p <= MaxPriority; p++)
+        public void Enqueue(string name, int priority)
         {
-            foreach (var name in queues[p])
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            
+            if (priority < MinPriority || priority > MaxPriority)
+                throw new ArgumentOutOfRangeException(nameof(priority));
+
+            queues[priority].Enqueue(name);
+        }
+        
+        // dequeue from highest priority first (0 is highest)
+        public string? Dequeue()
+        {
+            for (int p = MinPriority; p <= MaxPriority; p++)
             {
-                yield return $"[{p}] {name}";
+                if (queues[p].Count > 0) return queues[p].Dequeue();
+            }
+            return null;
+        }
+        
+        public bool IsEmpty()
+        {
+            for (int p = MinPriority; p <= MaxPriority; p++) if (queues[p].Count > 0) return false;
+            return true;
+        }
+        
+        public IEnumerable<string> ViewQueue()
+        {
+            for (int p = MinPriority; p <= MaxPriority; p++)
+            {
+                foreach (var name in queues[p])
+                {
+                    yield return $"[{p}] {name}";
+                }
             }
         }
     }
 }
+
