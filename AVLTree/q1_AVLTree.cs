@@ -31,11 +31,13 @@ namespace AVLTree
             if (node == null)
                 yield break;
 
+            // left subtree first
             foreach (var b in InOrderNodes(node.Left))
                 yield return b;
 
             yield return node.Data;
 
+            // then right subtree
             foreach (var b in InOrderNodes(node.Right))
                 yield return b;
         }
@@ -60,9 +62,10 @@ namespace AVLTree
                     node.Right = InsertNode(node.Right, book);
             }
 
-            // update height
+            // update height after insert
             node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
 
+            // check if tree is unbalanced
             int balance = GetBalance(node);
 
             // Left Left case
@@ -118,9 +121,10 @@ namespace AVLTree
                 }
                 else
                 {
-                    // this is the node to delete
+                    // found it - this is the node to delete
                     if (node.Left == null || node.Right == null)
                     {
+                        // node with one or no child
                         q1_AVLNode? temp = node.Left ?? node.Right;
 
                         if (temp == null)
@@ -134,7 +138,7 @@ namespace AVLTree
                     }
                     else
                     {
-                        // two children - get successor
+                        // two children - get successor (smallest in right subtree)
                         q1_AVLNode temp = MinValueNode(node.Right!);
                         node.Data = temp.Data;
                         node.Right = DeleteNode(node.Right, temp.Data.Year, temp.Data.Title);
@@ -145,6 +149,7 @@ namespace AVLTree
             if (node == null)
                 return null;
                 
+            // update height and rebalance
             node.Height = 1 + Math.Max(GetHeight(node.Left), GetHeight(node.Right));
             int balance = GetBalance(node);
 
@@ -173,7 +178,7 @@ namespace AVLTree
             return node;
         }
 
-       
+        // find leftmost node
         private q1_AVLNode MinValueNode(q1_AVLNode node)
         {
             q1_AVLNode current = node;
@@ -187,6 +192,7 @@ namespace AVLTree
             return node?.Height ?? 0;
         }
 
+        // balance factor
         private int GetBalance(q1_AVLNode? node)
         {
             if (node == null)
@@ -194,6 +200,7 @@ namespace AVLTree
             return GetHeight(node.Left) - GetHeight(node.Right);
         }
 
+        // rotate right
         private q1_AVLNode RightRotate(q1_AVLNode y)
         {
             q1_AVLNode x = y.Left!;
@@ -202,12 +209,14 @@ namespace AVLTree
             x.Right = y;
             y.Left = T2;
 
+            // heights need updating
             y.Height = 1 + Math.Max(GetHeight(y.Left), GetHeight(y.Right));
             x.Height = 1 + Math.Max(GetHeight(x.Left), GetHeight(x.Right));
 
             return x;
         }
 
+        // rotate left
         private q1_AVLNode LeftRotate(q1_AVLNode x)
         {
             q1_AVLNode y = x.Right!;

@@ -21,6 +21,7 @@ namespace AVLTree
 
         public void Insert(q2_Book book)
         {
+            // convert to q1 book and insert
             var qb = new q1_Book(book.Title, book.Author, book.Year);
             _baseTree.Insert(qb);
             Count++;
@@ -76,12 +77,14 @@ namespace AVLTree
             if (root == null) return null;
             
             var node = root;
+            // keep going right
             while (node.Right != null) node = node.Right;
             
             var qb = node.Data;
             return new q2_Book(qb.Title, qb.Author, qb.Year);
         }
 
+        // helper to find node
         private q1_AVLNode? FindNodeInQ1(int year, string title)
         {
             var node = (q1_AVLNode?)_rootField.GetValue(_baseTree);

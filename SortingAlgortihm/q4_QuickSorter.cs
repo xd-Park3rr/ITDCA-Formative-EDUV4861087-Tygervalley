@@ -17,7 +17,7 @@ namespace SortingAlgortihm
         {
             if (items == null || items.Count <= 1) return;
 
-            // pick comparison based on metric
+            // select comparison function
             Comparison<q4_Hotel> cmp = _metric switch
             {
                 "name" or "hotel_name" => (a, b) => string.Compare(a?.name ?? string.Empty, b?.name ?? string.Empty, StringComparison.OrdinalIgnoreCase),
@@ -30,6 +30,7 @@ namespace SortingAlgortihm
             QuickSort(items, 0, items.Count - 1, cmp);
         }
 
+        // recursive quicksort
         private void QuickSort(List<q4_Hotel> arr, int low, int high, Comparison<q4_Hotel> cmp)
         {
             if (low < high)
@@ -40,6 +41,7 @@ namespace SortingAlgortihm
             }
         }
 
+        // partition around pivot
         private int Partition(List<q4_Hotel> arr, int low, int high, Comparison<q4_Hotel> cmp)
         {
             var pivot = arr[high];
